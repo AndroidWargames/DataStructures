@@ -39,6 +39,7 @@ if __name__ == "__main__":
                 opening_brackets_stack.pop()
             else:
                 opening_brackets_stack.append(Bracket(next, y))
+                z += 1
                 break
             z -= 1
             pass
