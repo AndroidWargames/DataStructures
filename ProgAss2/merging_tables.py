@@ -8,9 +8,12 @@ rank = [1] * n
 parent = list(range(0, n))
 ans = max(lines)
 
+
 def getParent(table):
-    # find parent and compress path
+    if parent[table] != table:
+        parent[table] = getParent[parent[table]]
     return parent[table]
+
 
 def merge(destination, source):
     realDestination, realSource = getParent(destination), getParent(source)
@@ -18,14 +21,13 @@ def merge(destination, source):
     if realDestination == realSource:
         return False
 
-    # merge two components
-    # use union by rank heuristic 
-    # update ans with the new maximum table size
-    
+    parent[source] = destination
+    rank[destination] += rank[source]
+
     return True
 
 for i in range(m):
     destination, source = map(int, sys.stdin.readline().split())
     merge(destination - 1, source - 1)
-    print(ans)
-    
+
+    print(max(rank))
