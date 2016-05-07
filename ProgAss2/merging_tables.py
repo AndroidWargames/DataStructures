@@ -4,11 +4,11 @@ import sys
 
 n, m = map(int, sys.stdin.readline().split())
 lines = list(map(int, sys.stdin.readline().split()))
-#n, m = 5, 5
-#lines = [1, 1, 1, 1, 1]
-rank = [1] * n
+# n, m = 6, 4
+# lines = [10, 0, 5, 0, 3, 3]
+rank = [0] * n
 parent = list(range(0, n))
-ans = max(lines)
+mx = max(lines)
 
 
 def getParent(table):
@@ -18,19 +18,28 @@ def getParent(table):
 
 
 def merge(destination, source):
+    global mx
     realDestination, realSource = getParent(destination), getParent(source)
 
     if realDestination == realSource:
-        return False
+        return mx
 
-    parent[source] = destination
-    rank[realDestination] += rank[realSource]
+    if rank[realDestination] > rank[realSource]:
+        parent[realSource] = realDestination
+        lines[realDestination] += lines[realSource]
+        if lines[realDestination] > mx:
+            mx = lines[realDestination]
+    else:
+        parent[realDestination] = realSource
+        lines[realSource] += lines[realDestination]
+        if lines[realSource] > mx:
+            mx = lines[realSource]
+        if rank[realSource] == rank[realDestination]:
+            rank[realSource] += 1
+    return mx
 
-    return True
 
 for i in range(m):
-    # destination, source = map(int, sys.stdin.readline().split())
-    destination, source = [3, 2, 1, 5, 5][i], [5, 4, 4, 4, 3][i]
-    merge(destination - 1, source - 1)
-
-    print(max(rank))
+    destination, source = map(int, sys.stdin.readline().split())
+    #destination, source = [6, 6, 5, 4][i], [6, 5, 4, 3][i]
+    print(merge(destination - 1, source - 1))
