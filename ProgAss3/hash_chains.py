@@ -29,7 +29,10 @@ class QueryProcessor:
 
     def write_search_result(self, inp):
         hh = self._hash_func(inp)
-        print('yes' if inp in self.elems[hh] else 'no')
+        if len(self.elems[hh]) == 0:
+            print('no')
+        else:
+            print('yes' if inp in self.elems[hh] else 'no')
 
     def write_chain(self, chain):
         print(' '.join(reversed(self.elems[chain])))
@@ -48,9 +51,11 @@ class QueryProcessor:
                 self.elems[hh].append(query.s)
         elif query.type == 'del':
             hh = self._hash_func(query.s)
-            for i in range(len(self.elems[hh])):
-                if self.elems[hh][i] == query.s:
-                    del self.elems[hh][i]
+            if len(self.elems[hh]) > 0:
+                for i in range(len(self.elems[hh])):
+                    if self.elems[hh][i] == query.s:
+                        del self.elems[hh][i]
+                        break
 
     def process_queries(self):
         n = int(input())
