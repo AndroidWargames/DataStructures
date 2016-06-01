@@ -161,7 +161,7 @@ def erase(x):
 
 def search(x):
     global root
-    (a, r) = find(root,x)
+    (a, root) = find(root,x)
     if a is None:
         return False
     if a.key == x:
